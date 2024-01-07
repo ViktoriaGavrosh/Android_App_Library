@@ -1,6 +1,7 @@
 package com.viktoriagavrosh.mylibrary.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -30,38 +31,52 @@ import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.viktoriagavrosh.mylibrary.R
+import com.viktoriagavrosh.mylibrary.model.Book
 import com.viktoriagavrosh.mylibrary.ui.theme.MyLibraryTheme
 
 @Composable
 fun LibraryHomeScreen(
-    // TODO onBackPressed: () -> Unit
-    modifier: Modifier = Modifier
-    // TODO uiState
-    // TODO retryAction: () -> Unit
-    // TODO onBookClick: ( Book ) -> Unit
+    onUpdateHomeScreen: () -> Unit,
+    modifier: Modifier = Modifier,
+    libraryUiState: LibraryUiState,
+    onBookClick: (Book) -> Unit
 ) {
-    // TODO when(uiState)
-    DetailsScreen(
-        // TODO onBackPressed: () -> Unit
-        modifier = modifier.fillMaxSize()
-    )
-    LibraryGridScreen(
-        modifier = modifier.fillMaxSize()
-        // TODO onBookClick = onBookClick
-    )
-    LoadingScreen(
-        modifier = modifier.fillMaxSize()
-    )
-    ErrorScreen(
-        modifier = modifier.fillMaxSize()
-        // TODO retryAction = retryAction
-    )
+    when (libraryUiState) {
+        is LibraryUiState.Details -> {
+            DetailsScreen(
+                book = libraryUiState.book,
+                onUpdateHomeScreen = onUpdateHomeScreen,
+                modifier = modifier.fillMaxSize()
+            )
+        }
+
+        is LibraryUiState.Success -> {
+            LibraryGridScreen(
+                listBook = libraryUiState.booksList,
+                modifier = modifier.fillMaxSize(),
+                onBookClick = onBookClick
+            )
+        }
+
+        is LibraryUiState.Loading -> {
+            LoadingScreen(
+                modifier = modifier.fillMaxSize()
+            )
+        }
+
+        is LibraryUiState.Error -> {
+            ErrorScreen(
+                modifier = modifier.fillMaxSize(),
+                onUpdateHomeScreen = onUpdateHomeScreen
+            )
+        }
+    }
 }
 
 @Composable
 private fun LibraryGridScreen(
-    // TODO listBook: List<Book>
-    // TODO onBookClick: ( Book ) -> Unit
+    listBook: List<Book>,
+    onBookClick: (Book) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
@@ -69,32 +84,40 @@ private fun LibraryGridScreen(
         modifier = modifier,
         contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_small))
     ) {
-        // items(items= listBook, key = {  }) { CoverBook(
-        // modifier = Modifier.clickable { onBookClick(it) }) }
-        items(items = listOf(1, 2, 3, 4, 5)) {
+        items(items = listBook, key = { book -> book.key }) {
+            CoverBook(
+                book = it,
+                modifier = Modifier
+                    .clickable { onBookClick(it) }
+                    .fillMaxWidth()
+                    .padding(dimensionResource(id = R.dimen.padding_small))
+            )
+        }
+        /*items(items = listOf(1, 2, 3, 4, 5)) {
             Image(
                 painter = painterResource(id = R.drawable.flaffy),
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
-        }
+        }*/
     }
 }
 
 @Composable
 fun CoverBook(
-    //book: Book
+    book: Book,
     modifier: Modifier = Modifier
 ) {
     AsyncImage(
         model = ImageRequest
             .Builder(context = LocalContext.current)
-            .data("")   // book.imgUrl
+            .data("")   // book.imgUrl.toString()
             .build(),
         contentDescription = null, // book.title
         error = painterResource(id = R.drawable.ic_broken_image),
         placeholder = painterResource(id = R.drawable.ic_autorenew),
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier,
+        contentScale = ContentScale.Crop
     )
 }
 
@@ -121,8 +144,8 @@ private fun LoadingScreen(
 
 @Composable
 private fun ErrorScreen(
-    modifier: Modifier = Modifier
-    // TODO retryAction: () -> Unit
+    modifier: Modifier = Modifier,
+    onUpdateHomeScreen: () -> Unit
 ) {
     Column(
         modifier = modifier,
@@ -139,8 +162,7 @@ private fun ErrorScreen(
             modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_medium))
         )
         Button(
-            onClick = { // TODO retryAction + delete{
-                 },
+            onClick = { onUpdateHomeScreen() },
             modifier = Modifier.padding(top = dimensionResource(id = R.dimen.button_top_padding))
         ) {
             Text(
@@ -155,7 +177,11 @@ private fun ErrorScreen(
 @Composable
 private fun LibraryGridScreenPreview() {
     MyLibraryTheme {
-        LibraryGridScreen(modifier = Modifier.fillMaxSize())
+        LibraryGridScreen(
+            listBook = List(5) { Book("$it", "title", listOf("author"), it) },
+            onBookClick = {},
+            modifier = Modifier.fillMaxSize()
+        )
     }
 }
 
@@ -171,6 +197,8 @@ private fun LoadingScreenPreview() {
 @Composable
 private fun ErrorScreenPreview() {
     MyLibraryTheme {
-        ErrorScreen()
+        ErrorScreen(
+            onUpdateHomeScreen = {}
+        )
     }
 }

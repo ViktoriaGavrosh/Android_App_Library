@@ -10,36 +10,39 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.viktoriagavrosh.mylibrary.model.Book
 import com.viktoriagavrosh.mylibrary.ui.theme.MyLibraryTheme
 
 @Composable
 fun DetailsScreen(
-    // TODO book: Book
-    // TODO onBackPressed: () -> Unit
+    book: Book,
+    onUpdateHomeScreen: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     BackHandler {
-        //onBackPressed()
+        onUpdateHomeScreen()
     }
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.SpaceBetween,
+        verticalArrangement = Arrangement.SpaceAround,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CoverBook()
+        CoverBook(
+            book = book
+        )
         Text(
-            text = "author",      // TODO book.author
+            text = book.author.joinToString(),
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.titleMedium
         )
         Text(
-            text = "title",      // TODO book.title
+            text = book.title,
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.displaySmall
         )
         Text(
-            text = "description",      // TODO book.description
+            text = "description",      // TODO book.description?????
             style = MaterialTheme.typography.bodyLarge
         )
     }
@@ -49,6 +52,9 @@ fun DetailsScreen(
 @Composable
 fun DetailsScreenPreview() {
     MyLibraryTheme {
-        DetailsScreen()
+        DetailsScreen(
+            book = Book("123", "fff", listOf("rrr"), 123),
+            onUpdateHomeScreen = {  }
+        )
     }
 }
