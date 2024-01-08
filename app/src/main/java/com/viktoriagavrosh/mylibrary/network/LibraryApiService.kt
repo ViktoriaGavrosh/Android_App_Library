@@ -5,6 +5,6 @@ import retrofit2.http.GET
 
 interface LibraryApiService {
 
-    @GET("search.json?q=novel&limit=10")
+    @GET("search.json?q=fantasy&limit=10")
     suspend fun getBooks(): BookShelf
 }

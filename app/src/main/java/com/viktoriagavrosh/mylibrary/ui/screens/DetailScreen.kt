@@ -20,11 +20,12 @@ import com.viktoriagavrosh.mylibrary.ui.theme.MyLibraryTheme
 @Composable
 fun DetailsScreen(
     book: Book,
-    onUpdateHomeScreen: () -> Unit,
+    bookList: List<Book>,
+    onBackPressed: (List<Book>) -> Unit,
     modifier: Modifier = Modifier
 ) {
     BackHandler {
-        onUpdateHomeScreen()
+        onBackPressed(bookList)
     }
 
     Column(
@@ -69,8 +70,9 @@ fun DetailsScreen(
 fun DetailsScreenPreview() {
     MyLibraryTheme {
         DetailsScreen(
-            book = Book("123", "fff",123, listOf("rrr")),
-            onUpdateHomeScreen = {  }
+            book = Book("123", "fff", 123, listOf("rrr")),
+            bookList = emptyList(),
+            onBackPressed = { }
         )
     }
 }

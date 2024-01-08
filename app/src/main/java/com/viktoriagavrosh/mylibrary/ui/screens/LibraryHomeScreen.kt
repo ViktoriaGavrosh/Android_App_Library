@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -39,13 +40,15 @@ fun LibraryHomeScreen(
     onUpdateHomeScreen: () -> Unit,
     modifier: Modifier = Modifier,
     libraryUiState: LibraryUiState,
-    onBookClick: (Book) -> Unit
+    onBookClick: (Book, List<Book>) -> Unit,
+    onBackPressed: (List<Book>) -> Unit
 ) {
     when (libraryUiState) {
         is LibraryUiState.Details -> {
             DetailsScreen(
                 book = libraryUiState.book,
-                onUpdateHomeScreen = onUpdateHomeScreen,
+                bookList = libraryUiState.booksList,
+                onBackPressed = onBackPressed,
                 modifier = modifier.fillMaxSize()
             )
         }
@@ -76,7 +79,7 @@ fun LibraryHomeScreen(
 @Composable
 private fun LibraryGridScreen(
     listBook: List<Book>,
-    onBookClick: (Book) -> Unit,
+    onBookClick: (Book, List<Book>) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
@@ -88,9 +91,10 @@ private fun LibraryGridScreen(
             CoverBook(
                 book = it,
                 modifier = Modifier
-                    .clickable { onBookClick(it) }
+                    .clickable { onBookClick(it, listBook) }
                     .fillMaxWidth()
                     .padding(dimensionResource(id = R.dimen.padding_small))
+                    .aspectRatio(0.7F)
             )
         }
     }
@@ -172,7 +176,7 @@ private fun LibraryGridScreenPreview() {
     MyLibraryTheme {
         LibraryGridScreen(
             listBook = List(5) { Book("$it", "title", it, listOf("author")) },
-            onBookClick = {},
+            onBookClick = { _, _ ->  },
             modifier = Modifier.fillMaxSize()
         )
     }

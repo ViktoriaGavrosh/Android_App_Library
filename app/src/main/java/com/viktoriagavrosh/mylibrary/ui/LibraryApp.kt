@@ -33,7 +33,13 @@ fun LibraryApp(
             LibraryHomeScreen(
                 libraryUiState = libraryViewModel.libraryUiState,
                 onUpdateHomeScreen = { libraryViewModel.getBooksList() },
-                onBookClick = { it: Book -> libraryViewModel.goToDetailScreen(it) }
+                onBookClick = {
+                    book: Book, booksList: List<Book> ->
+                    libraryViewModel.goToDetailScreen(book, booksList)
+                },
+                onBackPressed = { bookList: List<Book> ->
+                    libraryViewModel.returnToHomeScreen(bookList)
+                }
             )
         }
     }

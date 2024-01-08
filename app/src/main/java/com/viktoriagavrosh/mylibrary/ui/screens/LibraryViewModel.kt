@@ -20,7 +20,7 @@ sealed interface LibraryUiState {
     data object Loading : LibraryUiState
     data object Error : LibraryUiState
     data class Success(val booksList: List<Book>) : LibraryUiState
-    data class Details(val book: Book) : LibraryUiState
+    data class Details(val book: Book, val booksList: List<Book>) : LibraryUiState
 }
 
 class LibraryViewModel(
@@ -47,8 +47,12 @@ class LibraryViewModel(
         }
     }
 
-    fun goToDetailScreen(book: Book) {
-        libraryUiState = LibraryUiState.Details(book)
+    fun goToDetailScreen(book: Book, booksList: List<Book>) {
+        libraryUiState = LibraryUiState.Details(book, booksList)
+    }
+
+    fun returnToHomeScreen(booksList: List<Book>) {
+        libraryUiState = LibraryUiState.Success(booksList)
     }
 
     companion object {
