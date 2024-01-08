@@ -8,4 +8,5 @@
 
     <dimen name="button_top_padding">200dp</dimen>
     <dimen name="width_card_book">150dp</dimen>
+    <dimen name="image_horizontal_padding">50dp</dimen>
 </resources>

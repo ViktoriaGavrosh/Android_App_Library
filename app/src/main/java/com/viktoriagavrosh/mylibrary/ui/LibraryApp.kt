@@ -22,7 +22,7 @@ import com.viktoriagavrosh.mylibrary.ui.theme.MyLibraryTheme
 fun LibraryApp(
     modifier: Modifier = Modifier
 ) {
-    val libraryViewModel: LibraryViewModel = viewModel()
+    val libraryViewModel: LibraryViewModel = viewModel(factory = LibraryViewModel.Factory)
 
     Scaffold(
         topBar = { LibraryTopBar() }
@@ -41,9 +41,7 @@ fun LibraryApp(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun LibraryTopBar(
-    modifier: Modifier = Modifier
-) {
+private fun LibraryTopBar() {
     CenterAlignedTopAppBar(
         title = {
             Text(

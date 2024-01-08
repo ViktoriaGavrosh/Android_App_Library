@@ -5,23 +5,23 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Autorenew
+import androidx.compose.material.icons.filled.CloudOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
@@ -93,13 +93,6 @@ private fun LibraryGridScreen(
                     .padding(dimensionResource(id = R.dimen.padding_small))
             )
         }
-        /*items(items = listOf(1, 2, 3, 4, 5)) {
-            Image(
-                painter = painterResource(id = R.drawable.flaffy),
-                contentDescription = null,
-                contentScale = ContentScale.Crop
-            )
-        }*/
     }
 }
 
@@ -111,9 +104,9 @@ fun CoverBook(
     AsyncImage(
         model = ImageRequest
             .Builder(context = LocalContext.current)
-            .data("")   // book.imgUrl.toString()
+            .data(book.imgUrl)
             .build(),
-        contentDescription = null, // book.title
+        contentDescription = book.title,
         error = painterResource(id = R.drawable.ic_broken_image),
         placeholder = painterResource(id = R.drawable.ic_autorenew),
         modifier = modifier,
@@ -178,7 +171,7 @@ private fun ErrorScreen(
 private fun LibraryGridScreenPreview() {
     MyLibraryTheme {
         LibraryGridScreen(
-            listBook = List(5) { Book("$it", "title", listOf("author"), it) },
+            listBook = List(5) { Book("$it", "title", it, listOf("author")) },
             onBookClick = {},
             modifier = Modifier.fillMaxSize()
         )
