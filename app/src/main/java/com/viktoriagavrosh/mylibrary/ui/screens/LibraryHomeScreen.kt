@@ -33,12 +33,14 @@ import coil.request.ImageRequest
 import com.viktoriagavrosh.mylibrary.R
 import com.viktoriagavrosh.mylibrary.model.Book
 import com.viktoriagavrosh.mylibrary.ui.theme.MyLibraryTheme
+import com.viktoriagavrosh.mylibrary.ui.utils.ScreenType
 
 @Composable
 fun LibraryHomeScreen(
     onUpdateHomeScreen: () -> Unit,
     modifier: Modifier = Modifier,
     libraryUiState: LibraryUiState,
+    screenType: ScreenType,
     onBookClick: (Book, List<Book>) -> Unit,
     onBackPressed: (List<Book>) -> Unit
 ) {
@@ -47,6 +49,7 @@ fun LibraryHomeScreen(
             DetailsScreen(
                 book = libraryUiState.book,
                 bookList = libraryUiState.booksList,
+                screenType = screenType,
                 onBackPressed = onBackPressed,
                 modifier = modifier.fillMaxSize()
             )
