@@ -3,8 +3,12 @@ package com.viktoriagavrosh.mylibrary.ui.screens
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,39 +33,31 @@ fun DetailsScreen(
     }
 
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .padding(dimensionResource(id = R.dimen.padding_medium)),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(modifier = Modifier.weight(0.5F))
         CoverBook(
             book = book,
             modifier = Modifier
                 .weight(3F)
-                .padding(horizontal = dimensionResource(id = R.dimen.image_horizontal_padding))
         )
-        Column(
-            modifier = Modifier
-                .weight(2F)
-                .padding(dimensionResource(id = R.dimen.padding_large))
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = book.author.joinToString(),
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.titleMedium
+        Text(
+            text = book.author.joinToString(),
+            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(
+                top = dimensionResource(id = R.dimen.padding_large)
             )
-            Text(
-                text = book.title,
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.displaySmall
-            )
-            Text(
-                text = "description",      // TODO book.description?????
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
-            )
-        }
+        )
+        Text(
+            text = book.title,
+            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.displaySmall
+        )
+        Spacer(modifier = Modifier.weight(0.5F))
     }
 }
 

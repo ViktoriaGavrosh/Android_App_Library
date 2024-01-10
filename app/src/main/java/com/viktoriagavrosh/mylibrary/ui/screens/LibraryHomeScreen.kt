@@ -22,7 +22,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
@@ -94,7 +93,7 @@ private fun LibraryGridScreen(
                     .clickable { onBookClick(it, listBook) }
                     .fillMaxWidth()
                     .padding(dimensionResource(id = R.dimen.padding_small))
-                    .aspectRatio(0.7F)
+
             )
         }
     }
@@ -111,9 +110,10 @@ fun CoverBook(
             .data(book.imgUrl)
             .build(),
         contentDescription = book.title,
-        error = painterResource(id = R.drawable.ic_broken_image),
-        placeholder = painterResource(id = R.drawable.ic_autorenew),
-        modifier = modifier,
+        error = painterResource(id = R.drawable.default_cover_book),
+        placeholder = painterResource(id = R.drawable.default_cover_book),
+        modifier = modifier
+            .aspectRatio(0.65F),
         contentScale = ContentScale.Crop
     )
 }

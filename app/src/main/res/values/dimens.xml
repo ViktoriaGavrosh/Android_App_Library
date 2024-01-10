@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="icon_size">100dp</dimen>
+    <dimen name="cover_width">300dp</dimen>
 
     <dimen name="padding_small">8dp</dimen>
     <dimen name="padding_medium">12dp</dimen>
