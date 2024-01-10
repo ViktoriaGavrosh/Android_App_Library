@@ -33,6 +33,7 @@ import coil.request.ImageRequest
 import com.viktoriagavrosh.mylibrary.R
 import com.viktoriagavrosh.mylibrary.model.Book
 import com.viktoriagavrosh.mylibrary.ui.theme.MyLibraryTheme
+import com.viktoriagavrosh.mylibrary.ui.utils.NavigationType
 import com.viktoriagavrosh.mylibrary.ui.utils.ScreenType
 
 @Composable
@@ -41,35 +42,34 @@ fun LibraryHomeScreen(
     modifier: Modifier = Modifier,
     libraryUiState: LibraryUiState,
     screenType: ScreenType,
-    onBookClick: (Book, List<Book>) -> Unit,
-    onBackPressed: (List<Book>) -> Unit
+    onBookClick: (Book) -> Unit,
+    onBackPressed: () -> Unit
 ) {
-    when (libraryUiState) {
-        is LibraryUiState.Details -> {
+    when (libraryUiState.navigationType) {
+        is NavigationType.Details -> {
             DetailsScreen(
-                book = libraryUiState.book,
-                bookList = libraryUiState.booksList,
+                book = libraryUiState.navigationType.book,
                 screenType = screenType,
                 onBackPressed = onBackPressed,
                 modifier = modifier.fillMaxSize()
             )
         }
 
-        is LibraryUiState.Success -> {
+        is NavigationType.Success -> {
             LibraryGridScreen(
-                listBook = libraryUiState.booksList,
+                listBook = libraryUiState.bookList,
                 modifier = modifier.fillMaxSize(),
                 onBookClick = onBookClick
             )
         }
 
-        is LibraryUiState.Loading -> {
+        is NavigationType.Loading -> {
             LoadingScreen(
                 modifier = modifier.fillMaxSize()
             )
         }
 
-        is LibraryUiState.Error -> {
+        is NavigationType.Error -> {
             ErrorScreen(
                 modifier = modifier.fillMaxSize(),
                 onUpdateHomeScreen = onUpdateHomeScreen
@@ -81,7 +81,7 @@ fun LibraryHomeScreen(
 @Composable
 private fun LibraryGridScreen(
     listBook: List<Book>,
-    onBookClick: (Book, List<Book>) -> Unit,
+    onBookClick: (Book) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
@@ -93,7 +93,7 @@ private fun LibraryGridScreen(
             CoverBook(
                 book = it,
                 modifier = Modifier
-                    .clickable { onBookClick(it, listBook) }
+                    .clickable { onBookClick(it) }
                     .fillMaxWidth()
                     .padding(dimensionResource(id = R.dimen.padding_small))
 
@@ -179,7 +179,7 @@ private fun LibraryGridScreenPreview() {
     MyLibraryTheme {
         LibraryGridScreen(
             listBook = List(5) { Book("$it", "title", it, listOf("author")) },
-            onBookClick = { _, _ ->  },
+            onBookClick = { _ ->  },
             modifier = Modifier.fillMaxSize()
         )
     }

@@ -1,8 +1,8 @@
 package com.viktoriagavrosh.mylibrary.fake
 
 import com.viktoriagavrosh.mylibrary.rule.TestDispatcherRule
-import com.viktoriagavrosh.mylibrary.ui.screens.LibraryUiState
 import com.viktoriagavrosh.mylibrary.ui.screens.LibraryViewModel
+import com.viktoriagavrosh.mylibrary.ui.utils.NavigationType
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -17,9 +17,8 @@ class LibraryViewModelTests {
     fun libraryViewModel_getBooksList_verifyLibraryUiStateSuccess() = runTest {
         val libraryViewModel = LibraryViewModel(booksRepository = FakeNetworkBookRepository())
         assertEquals(
-            LibraryUiState.Success(FakeDataSource.booksList),
-            libraryViewModel.libraryUiState
+            NavigationType.Success,
+            libraryViewModel.libraryUiState.value.navigationType
         )
     }
-
 }

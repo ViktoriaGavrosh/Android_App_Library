@@ -1,8 +1,5 @@
 package com.viktoriagavrosh.mylibrary.ui.screens
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -12,47 +9,64 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.viktoriagavrosh.mylibrary.LibraryApplication
 import com.viktoriagavrosh.mylibrary.data.BooksRepository
 import com.viktoriagavrosh.mylibrary.model.Book
+import com.viktoriagavrosh.mylibrary.ui.utils.NavigationType
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
-sealed interface LibraryUiState {
-    data object Loading : LibraryUiState
-    data object Error : LibraryUiState
-    data class Success(val booksList: List<Book>) : LibraryUiState
-    data class Details(val book: Book, val booksList: List<Book>) : LibraryUiState
-}
 
 class LibraryViewModel(
     private val booksRepository: BooksRepository
 ) : ViewModel() {
 
-    var libraryUiState: LibraryUiState by mutableStateOf(LibraryUiState.Loading)
-        private set
+    private var _uiState = MutableStateFlow(LibraryUiState())
+    val libraryUiState: StateFlow<LibraryUiState> = _uiState.asStateFlow()
 
     init {
         getBooksList()
     }
 
     fun getBooksList() {
+        var navigationType: NavigationType
+        var bookList: List<Book> = emptyList()
         viewModelScope.launch {
-            libraryUiState = LibraryUiState.Loading
-            libraryUiState = try {
-                LibraryUiState.Success(booksRepository.getBooks())
+            navigationType = try {
+                bookList = booksRepository.getBooks()
+                NavigationType.Success
             } catch (e: IOException) {
-                LibraryUiState.Error
+                NavigationType.Error
             } catch (e: HttpException) {
-                LibraryUiState.Error
+                NavigationType.Error
+            }
+            _uiState.update {
+                it.copy(
+                    navigationType = navigationType,
+                    bookList = bookList
+                )
             }
         }
     }
 
-    fun goToDetailScreen(book: Book, booksList: List<Book>) {
-        libraryUiState = LibraryUiState.Details(book, booksList)
+    fun goToDetailScreen(book: Book) {
+        val navigationType = NavigationType.Details(book)
+        _uiState.update {
+            it.copy(
+                navigationType = navigationType
+            )
+        }
     }
 
-    fun returnToHomeScreen(booksList: List<Book>) {
-        libraryUiState = LibraryUiState.Success(booksList)
+    fun returnToHomeScreen() {
+        val navigationType = NavigationType.Success
+        _uiState.update {
+            it.copy(
+                navigationType = navigationType
+            )
+        }
     }
 
     companion object {

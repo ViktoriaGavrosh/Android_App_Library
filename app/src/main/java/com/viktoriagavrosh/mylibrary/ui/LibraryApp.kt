@@ -9,6 +9,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,6 +28,7 @@ fun LibraryApp(
     modifier: Modifier = Modifier
 ) {
     val libraryViewModel: LibraryViewModel = viewModel(factory = LibraryViewModel.Factory)
+    val libraryUiState by libraryViewModel.libraryUiState.collectAsState()
 
     val screenType = if (windowSize == WindowWidthSizeClass.Expanded) {
         ScreenType.HORIZONTAL_SCREEN
@@ -37,19 +40,16 @@ fun LibraryApp(
         topBar = { LibraryTopBar() }
     ) {
         Surface(
-           modifier = modifier.padding(it)
+            modifier = modifier.padding(it)
         ) {
             LibraryHomeScreen(
-                libraryUiState = libraryViewModel.libraryUiState,
+                libraryUiState = libraryUiState,
                 screenType = screenType,
                 onUpdateHomeScreen = { libraryViewModel.getBooksList() },
-                onBookClick = {
-                    book: Book, booksList: List<Book> ->
-                    libraryViewModel.goToDetailScreen(book, booksList)
+                onBookClick = { book: Book ->
+                    libraryViewModel.goToDetailScreen(book)
                 },
-                onBackPressed = { bookList: List<Book> ->
-                    libraryViewModel.returnToHomeScreen(bookList)
-                }
+                onBackPressed = { libraryViewModel.returnToHomeScreen() }
             )
         }
     }

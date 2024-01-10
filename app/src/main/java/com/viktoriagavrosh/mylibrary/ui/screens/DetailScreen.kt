@@ -23,13 +23,12 @@ import com.viktoriagavrosh.mylibrary.ui.utils.ScreenType
 @Composable
 fun DetailsScreen(
     book: Book,
-    bookList: List<Book>,
     screenType: ScreenType,
-    onBackPressed: (List<Book>) -> Unit,
+    onBackPressed: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     BackHandler {
-        onBackPressed(bookList)
+        onBackPressed()
     }
 
     if (screenType == ScreenType.VERTICAL_SCREEN) {
@@ -102,7 +101,6 @@ fun CompactDetailsScreenPreview() {
     MyLibraryTheme {
         DetailsScreen(
             book = Book("123", "fff", 123, listOf("rrr")),
-            bookList = emptyList(),
             screenType = ScreenType.VERTICAL_SCREEN,
             onBackPressed = { }
         )
@@ -115,7 +113,6 @@ fun ExpandedDetailsScreenPreview() {
     MyLibraryTheme {
         DetailsScreen(
             book = Book("123", "fff", 123, listOf("rrr")),
-            bookList = emptyList(),
             screenType = ScreenType.HORIZONTAL_SCREEN,
             onBackPressed = { }
         )
