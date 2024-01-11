@@ -4,6 +4,7 @@ import com.viktoriagavrosh.mylibrary.model.Book
 import com.viktoriagavrosh.mylibrary.ui.utils.NavigationType
 
 data class LibraryUiState(
-    val navigationType: NavigationType = NavigationType.Loading,
+    val textQuery: String = "",
+    val navigationType: NavigationType = NavigationType.Start,
     val bookList: List<Book> = emptyList()
 )

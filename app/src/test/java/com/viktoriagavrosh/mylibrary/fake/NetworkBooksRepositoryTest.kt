@@ -12,7 +12,7 @@ class NetworkBooksRepositoryTest {
         val repository = NetworkBooksRepository(libraryApiService = FakeApiService())
         assertEquals(
             FakeDataSource.booksList,
-            repository.getBooks()
+            repository.getBooks("")
         )
     }
 }

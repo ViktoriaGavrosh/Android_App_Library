@@ -14,8 +14,19 @@ class LibraryViewModelTests {
     val testDispatcher = TestDispatcherRule()
 
     @Test
-    fun libraryViewModel_getBooksList_verifyLibraryUiStateSuccess() = runTest {
+    fun libraryViewModel_verifyLibraryUiStateStart() = runTest {
         val libraryViewModel = LibraryViewModel(booksRepository = FakeNetworkBookRepository())
+        assertEquals(
+            NavigationType.Start,
+            libraryViewModel.libraryUiState.value.navigationType
+        )
+    }
+
+    @Test
+    fun libraryViewModel_getBooksList_updateLibraryUiStateSuccess() = runTest {
+        val libraryViewModel = LibraryViewModel(booksRepository = FakeNetworkBookRepository())
+        libraryViewModel.updateTextQuery("")
+        libraryViewModel.goToHomeScreen()
         assertEquals(
             NavigationType.Success,
             libraryViewModel.libraryUiState.value.navigationType

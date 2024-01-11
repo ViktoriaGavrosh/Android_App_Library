@@ -46,41 +46,47 @@ import com.viktoriagavrosh.mylibrary.ui.utils.ScreenType
 
 @Composable
 fun LibraryHomeScreen(
-    onUpdateHomeScreen: () -> Unit,
     modifier: Modifier = Modifier,
     libraryUiState: LibraryUiState,
-    screenType: ScreenType,
-    onBookClick: (Book) -> Unit,
-    onBackPressed: () -> Unit
+    libraryViewModel: LibraryViewModel,
+    screenType: ScreenType
 ) {
     when (libraryUiState.navigationType) {
+        is NavigationType.Start -> {
+            StartScreen(
+                libraryUiState = libraryUiState,
+                onTextFieldChange = { libraryViewModel.updateTextQuery(it) },
+                onButtonClick = { libraryViewModel.goToHomeScreen() },
+                modifier = modifier
+            )
+        }
         is NavigationType.Details -> {
             DetailsScreen(
                 book = libraryUiState.navigationType.book,
                 screenType = screenType,
-                onBackPressed = onBackPressed,
-                modifier = modifier.fillMaxSize()
+                onBackPressed = { libraryViewModel.returnToHomeScreen() },
+                modifier = modifier
             )
         }
 
         is NavigationType.Success -> {
             LibraryGridScreen(
                 listBook = libraryUiState.bookList,
-                modifier = modifier.fillMaxSize(),
-                onBookClick = onBookClick
+                modifier = modifier,
+                onBookClick = { libraryViewModel.goToDetailScreen(it) }
             )
         }
 
         is NavigationType.Loading -> {
             LoadingScreen(
-                modifier = modifier.fillMaxSize()
+                modifier = modifier
             )
         }
 
         is NavigationType.Error -> {
             ErrorScreen(
-                modifier = modifier.fillMaxSize(),
-                onUpdateHomeScreen = onUpdateHomeScreen
+                modifier = modifier,
+                onUpdateHomeScreen = { libraryViewModel.getBooksList() }
             )
         }
     }

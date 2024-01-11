@@ -26,16 +26,12 @@ class LibraryViewModel(
     private var _uiState = MutableStateFlow(LibraryUiState())
     val libraryUiState: StateFlow<LibraryUiState> = _uiState.asStateFlow()
 
-    init {
-        getBooksList()
-    }
-
     fun getBooksList() {
         var navigationType: NavigationType
         var bookList: List<Book> = emptyList()
         viewModelScope.launch {
             navigationType = try {
-                bookList = booksRepository.getBooks()
+                bookList = booksRepository.getBooks(_uiState.value.textQuery)
                 NavigationType.Success
             } catch (e: IOException) {
                 NavigationType.Error
@@ -48,6 +44,23 @@ class LibraryViewModel(
                     bookList = bookList
                 )
             }
+        }
+    }
+
+    fun goToHomeScreen() {
+        _uiState.update {
+            it.copy(
+                navigationType = NavigationType.Loading
+            )
+        }
+        getBooksList()
+    }
+
+    fun updateTextQuery(text: String) {
+        _uiState.update {
+            it.copy(
+                textQuery = text
+            )
         }
     }
 
