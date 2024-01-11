@@ -1,5 +1,11 @@
 package com.viktoriagavrosh.mylibrary.ui.screens
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,8 +26,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
@@ -125,6 +133,17 @@ fun CoverBook(
 private fun LoadingScreen(
     modifier: Modifier = Modifier
 ) {
+    val infiniteTransition = rememberInfiniteTransition(label = "")
+    val rotationValue: Float by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1000, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = ""
+    )
+
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
@@ -133,7 +152,9 @@ private fun LoadingScreen(
         Image(
             imageVector = Icons.Filled.Autorenew,
             contentDescription = stringResource(id = R.string.please_wait),
-            modifier = Modifier.size(dimensionResource(id = R.dimen.icon_size))
+            modifier = Modifier
+                .size(dimensionResource(id = R.dimen.icon_size))
+                .rotate(rotationValue)
         )
         Text(
             text = stringResource(R.string.please_wait),
@@ -179,7 +200,7 @@ private fun LibraryGridScreenPreview() {
     MyLibraryTheme {
         LibraryGridScreen(
             listBook = List(5) { Book("$it", "title", it, listOf("author")) },
-            onBookClick = { _ ->  },
+            onBookClick = { _ -> },
             modifier = Modifier.fillMaxSize()
         )
     }
