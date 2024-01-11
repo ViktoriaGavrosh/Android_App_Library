@@ -1,4 +1,4 @@
-package com.viktoriagavrosh.mylibrary.ui.screens
+package com.viktoriagavrosh.mylibrary.ui.screens.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -78,6 +78,15 @@ class LibraryViewModel(
         _uiState.update {
             it.copy(
                 navigationType = navigationType
+            )
+        }
+    }
+
+    fun returnToStartScreen() {
+        _uiState.update {
+            it.copy(
+                textQuery = "",
+                navigationType = NavigationType.Start
             )
         }
     }

@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.mylibrary.R
+import com.viktoriagavrosh.mylibrary.ui.screens.viewmodel.LibraryUiState
 import com.viktoriagavrosh.mylibrary.ui.theme.MyLibraryTheme
 
 @Composable

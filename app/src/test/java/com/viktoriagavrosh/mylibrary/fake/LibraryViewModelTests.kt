@@ -1,7 +1,7 @@
 package com.viktoriagavrosh.mylibrary.fake
 
 import com.viktoriagavrosh.mylibrary.rule.TestDispatcherRule
-import com.viktoriagavrosh.mylibrary.ui.screens.LibraryViewModel
+import com.viktoriagavrosh.mylibrary.ui.screens.viewmodel.LibraryViewModel
 import com.viktoriagavrosh.mylibrary.ui.utils.NavigationType
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals

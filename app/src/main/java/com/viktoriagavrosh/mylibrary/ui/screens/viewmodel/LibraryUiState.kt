@@ -1,4 +1,4 @@
-package com.viktoriagavrosh.mylibrary.ui.screens
+package com.viktoriagavrosh.mylibrary.ui.screens.viewmodel
 
 import com.viktoriagavrosh.mylibrary.model.Book
 import com.viktoriagavrosh.mylibrary.ui.utils.NavigationType
