@@ -8,7 +8,7 @@ class Book(
     val key: String,
     val title: String,
     @SerialName(value = "cover_i")
-    val imgId: Int,
+    val imgId: Int = 0,
     @SerialName(value = "author_name")
     val author: List<String>,
 ) {

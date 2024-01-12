@@ -1,11 +1,10 @@
 package com.viktoriagavrosh.mylibrary.ui
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -36,11 +35,15 @@ fun LibraryApp(
         ScreenType.VERTICAL_SCREEN
     }
 
-    Scaffold(
-        topBar = { LibraryTopBar() }
+    Column(
+        modifier = modifier
     ) {
+        if (screenType == ScreenType.VERTICAL_SCREEN) {
+            LibraryTopBar()
+        }
+
         Surface(
-            modifier = modifier.padding(it)
+            modifier = Modifier
         ) {
             LibraryHomeScreen(
                 libraryUiState = libraryUiState,
@@ -70,5 +73,13 @@ private fun LibraryTopBar() {
 fun LibraryTopBarPreview() {
     MyLibraryTheme {
         LibraryTopBar()
+    }
+}
+
+@Preview
+@Composable
+fun LibraryAppPreview() {
+    MyLibraryTheme {
+        LibraryApp(windowSize = WindowWidthSizeClass.Compact)
     }
 }
