@@ -43,6 +43,7 @@ fun LibraryGridScreen(
         items(items = listBook, key = { book -> book.key }) {
             CoverBook(
                 book = it,
+                isContentScaleCrop = true,
                 modifier = Modifier
                     .clickable { onBookClick(it) }
                     .fillMaxWidth()
@@ -56,6 +57,7 @@ fun LibraryGridScreen(
 @Composable
 fun CoverBook(
     book: Book,
+    isContentScaleCrop: Boolean,
     modifier: Modifier = Modifier
 ) {
     AsyncImage(
@@ -68,7 +70,7 @@ fun CoverBook(
         placeholder = painterResource(id = R.drawable.default_cover_book),
         modifier = modifier
             .aspectRatio(0.65F),
-        contentScale = ContentScale.Crop
+        contentScale = if(isContentScaleCrop) ContentScale.Crop else ContentScale.Fit
     )
 }
 

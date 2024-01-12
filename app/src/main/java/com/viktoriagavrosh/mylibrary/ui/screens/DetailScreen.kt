@@ -41,6 +41,7 @@ fun DetailsScreen(
             Spacer(modifier = Modifier.weight(0.5F))
             CoverBook(
                 book = book,
+                isContentScaleCrop = false,
                 modifier = Modifier
                     .weight(3F)
             )
@@ -68,6 +69,7 @@ fun DetailsScreen(
         ) {
             CoverBook(
                 book = book,
+                isContentScaleCrop = false,
                 modifier = Modifier
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_large))
             )
