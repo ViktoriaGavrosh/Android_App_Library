@@ -70,7 +70,7 @@ fun CoverBook(
         placeholder = painterResource(id = R.drawable.default_cover_book),
         modifier = modifier
             .aspectRatio(0.65F),
-        contentScale = if(isContentScaleCrop) ContentScale.Crop else ContentScale.Fit
+        contentScale = if (isContentScaleCrop) ContentScale.Crop else ContentScale.Fit
     )
 }
 

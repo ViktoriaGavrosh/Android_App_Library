@@ -27,13 +27,12 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val windowSize = calculateWindowSizeClass(activity = this)
-                   LibraryApp(windowSize = windowSize.widthSizeClass)
+                    LibraryApp(windowSize = windowSize.widthSizeClass)
                 }
             }
         }
     }
 }
-
 
 
 @Preview(showBackground = true)

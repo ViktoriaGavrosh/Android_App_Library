@@ -10,5 +10,5 @@ interface LibraryApiService {
     suspend fun getBooks(
         @Query("q") text: String,
         @Query("limit") limit: Int = 10
-        ): BookShelf
+    ): BookShelf
 }
